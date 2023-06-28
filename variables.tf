@@ -1,8 +1,9 @@
 variable "project_name" { }
 
-variable "domain_name" { }
-variable "ns_records" { }
+variable "host_domain_name" { }
+variable "sub_domain" { }
 variable "api_server_domain" { }
+# variable "ns_records" { }
 
 variable "vpc_cidr" { }
 variable "az_names" { }
