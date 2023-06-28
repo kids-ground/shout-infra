@@ -13,3 +13,5 @@ variable "private_subnets" { }
 variable "ec2_inbound_rule" { }
 variable "db_inbound_rule" { }
 variable "outbound_rule" { }
+
+variable "key_pair_name" { }
