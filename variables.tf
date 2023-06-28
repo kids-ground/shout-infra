@@ -15,3 +15,5 @@ variable "db_inbound_rule" { }
 variable "outbound_rule" { }
 
 variable "key_pair_name" { }
+variable "db_username" { }
+variable "db_password" { }

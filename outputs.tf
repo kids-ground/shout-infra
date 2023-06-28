@@ -9,3 +9,7 @@ output "ecr_repository_arn" {
 output "ec2_ip" {
   value = aws_eip.eip.public_ip
 }
+
+output "rds_domain" {
+  value = aws_db_instance.db.domain
+}
