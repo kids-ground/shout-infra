@@ -1,3 +1,15 @@
+# Route53
+resource "aws_route53_zone" "zone_main" {
+  name = var.host_domain_name
+  comment = var.host_domain_name
+}
+
+# ACM
+resource "aws_acm_certificate" "acm" {
+  domain_name       = var.sub_domain
+  validation_method = "DNS"
+}
+
 # VPC
 module "vpc_main" {
   source = "./modules/vpc"
@@ -77,12 +89,14 @@ resource "aws_db_subnet_group" "db_subnet_group" {
   subnet_ids = module.vpc_main.private_subnets_ids
 }
 
+
 resource "aws_db_instance" "db" {
   identifier = "${var.project_name}-rds"
   vpc_security_group_ids = [ module.db_sg.id ]
   availability_zone = var.az_names[0]
   db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
-  
+
+  # 기본 데이터 인코딩 - utf8mb4
   engine = "mysql"
   engine_version = "8.0.32"
   instance_class = "db.t4g.micro"
@@ -101,10 +115,23 @@ resource "aws_db_instance" "db" {
   skip_final_snapshot = true
 }
 
-# # S3
+# S3
+module "s3" {
+  source = "./modules/s3/public_read"
+  name = "${var.project_name}-public-read-s3"
+}
 
-# # ACM
+# API Gateway
+module "api_gateway" {
+  source = "./modules/api_gateway"
+  name = "${var.project_name}-api-gateway"
 
-# # Route53
+  stage = "$default"
+  protocol_type = "HTTP"
 
-# # API Gateway
+  integration_type = "HTTP_PROXY"
+  integration_method = "ANY"
+  integration_ip = aws_eip.eip.public_ip
+
+  route_key = "ANY /{proxy+}"
+}
