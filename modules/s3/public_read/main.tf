@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "s3" {
   bucket = var.name
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_website_configuration" "s3_hosting" {

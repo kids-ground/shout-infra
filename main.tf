@@ -89,7 +89,6 @@ resource "aws_db_subnet_group" "db_subnet_group" {
   subnet_ids = module.vpc_main.private_subnets_ids
 }
 
-
 resource "aws_db_instance" "db" {
   identifier = "${var.project_name}-rds"
   vpc_security_group_ids = [ module.db_sg.id ]
@@ -98,7 +97,7 @@ resource "aws_db_instance" "db" {
 
   # 기본 데이터 인코딩 - utf8mb4
   engine = "mysql"
-  engine_version = "8.0.32"
+  engine_version = "8.0.33"
   instance_class = "db.t4g.micro"
   
   db_name = "${var.project_name}"
